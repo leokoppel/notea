@@ -1,0 +1,124 @@
+/* Compass Rose */
+.compass {
+	position: relative;
+	width: 100px;
+	height: 100px;
+}
+
+.compass-dir {
+	display: block;
+	border: 0;
+	padding: 0;
+	position: absolute;
+}
+
+.compass-n, .compass-s, .compass-e, .compass-w {
+	-webkit-transform: rotate(-45deg);
+	-moz-transform: rotate(-45deg);
+	-ms-transform: rotate(-45deg);
+	-o-transform: rotate(-45deg);
+	transform: rotate(-45deg);
+	width: 50%;
+	height: 50%;
+	z-index: 320;
+	background: white;
+}
+.compass-nw, .compass-ne, .compass-sw, .compass-se {
+	width: 33.33%;
+	height: 33.33%;
+	z-index: 310;
+}
+.compass-center {
+	width: 52%;
+	height: 52%;
+	top: 50%;
+	left: 50%;
+	margin: -26%;
+	background: white;
+	z-index: 330;
+}
+
+.compass-n {
+	top: -10%;
+	left: 50%;
+	margin-left: -25%;
+	/* adjust after-rotation position for border */
+}
+.compass-e {
+	right: -10%;
+	top: 50%;
+	margin-top: -25%;
+}
+.compass-s {
+	bottom: -10%;
+	left: 50%;
+	margin-left: -25%;
+}
+.compass-w {
+	left: -10%;
+	top: 50%;
+	margin-top: -25%;
+	-webkit-transform: rotate(-45deg) translateX(0px);
+}
+
+.compass-nw {
+	top: 0;
+	left: 0;
+}
+.compass-ne {
+	top: 0;
+	right: 0;
+}
+.compass-sw {
+	bottom: 0;
+	left: 0;
+}
+.compass-se {
+	bottom: 0;
+	right: 0;
+}
+
+.compass-dir a {
+	width: 100%;
+	height: 100%;
+	display: block;
+	/* hide text */
+	font: 0/0 a;
+	text-shadow: none;
+	color: transparent;
+	background: #888;
+}
+
+.compass-cardinal a {
+	background: #555;
+}
+
+.compass-n a {
+	margin: 2px -2px;
+	background: #333;
+}
+.compass-s a {
+	margin: -2px 2px;
+	background: #333;
+}
+.compass-e a {
+	margin: -2px -2px;
+}
+.compass-w a {
+	margin: 2px 2px;
+}
+
+.compass-dir a:hover {
+	background: #2D9C2F;
+}
+.compass-cardinal a:hover {
+	background: #27CF89;
+}
+
+.compass-center a {
+	background: #fff;
+}
+
+.compass-center a:hover {
+	background: #2BAAB3;
+}

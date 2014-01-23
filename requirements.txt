@@ -1,0 +1,16 @@
+Flask==0.10.1
+Jinja2==2.7.1
+MarkupSafe==0.18
+Werkzeug==0.9.4
+cffi==0.8
+gevent==1.0dev
+gevent-websocket==0.9
+greenlet==0.4.0
+inflect==0.2.4
+ipython==1.1.0
+itsdangerous==0.23
+pycparser==2.10
+pypycore==0.1
+readline==6.2.4.1
+websocket-client==0.12.0
+wsgiref==0.1.2

@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Game</title>
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+		<script>
+            window.jQuery || document.write("<script src=\"{{ url_for('static', filename='jquery-1.10.2.min.js') }}\"><\/script>");
+		</script>
+		<script src="{{ url_for('static', filename='jquery.terminal-0.7.12.js') }}"></script>
+		<link rel="stylesheet" href="{{ url_for('static', filename='reset.css') }}" />
+		<link rel="stylesheet" href="{{ url_for('static', filename='jquery.terminal.css') }}" />
+		<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+
+	</head>
+	<body>
+		<div id="wrapper">
+			<div id="gameui">
+				<div id="controls">
+					<table class="compass">
+						<tr>
+							<td class="compass-dir compass-nw"><a href='#'>NW</a></td>
+							<td class="compass-dir compass-cardinal compass-n"><a href='#'>N</a></td>
+							<td class="compass-dir compass-ne"><a href='#'>NE</a></td>
+						</tr>
+						<tr>
+							<td class="compass-dir compass-cardinal compass-w"><a href='#'>W</a></td>
+							<td class="compass-dir compass-center"><a href='#'> </a></td>
+							<td class="compass-dir compass-cardinal compass-e"><a href='#'>E</a></td>
+						</tr>
+						<tr>
+							<td class="compass-dir compass-sw"><a href='#'>SW</a></td>
+							<td class="compass-dir compass-cardinal compass-s"><a href='#'>S</a></td>
+							<td class="compass-dir compass-se"><a href='#'>SE</a></td>
+						</tr>
+					</table>
+					<table class="score">
+						<tr>
+							<td>Score:</td>
+							<td class="value-score">0</td>
+						</tr>
+						<tr>
+							<td>Moves:</td>
+							<td class="value-moves">0</td>
+						</tr>
+					</table>
+					<div class="help">
+						<p style="text-align:center;">
+							<a href="#help-content" class="expand-link">?</a>
+						</p>
+						<div id="help-content" class="expand-content">
+							<p>
+								This is a text adventure game—a work of <a href="http://en.wikipedia.org/wiki/Interactive_fiction">interactive fiction</a>.
+							</p>
+							<p>
+								Type a command like "look around", "take the jar", or "go north".
+							</p>
+							<p>
+								More: <a href="http://www.musicwords.net/if/how_to_play.htm">How to Play Interactive Fiction</a>
+							</p>
+							<br/>
+							<p class="small">
+								No Tea Engine
+							</p>
+						</div>
+					</div>
+
+				</div>
+				<div id="terminal" class="terminal">
+					<div id="terminal-output" class="terminal-output"></div>
+					<div id="cmd"></div>
+				</div>
+			</div>
+		</div>
+
+		<script src="{{ url_for('static', filename='gameui.js') }}"></script>
+	</body>
+</html>

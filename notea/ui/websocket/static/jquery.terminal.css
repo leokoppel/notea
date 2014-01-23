@@ -1,0 +1,52 @@
+/*
+ * This css file is part of jquery terminal
+ *
+ * Licensed under GNU LGPL Version 3 license
+ * Copyright (c) 2011-2013 Jakub Jankiewicz <http://jcubic.pl>
+ *
+ */
+.terminal .terminal-output .format, .terminal .cmd .format,
+.terminal .cmd .prompt, .terminal .cmd .prompt div, .terminal .terminal-output div div{
+    display: inline-block;
+}
+.terminal .clipboard {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    opacity: 0.01;
+    filter: alpha(opacity = 0.01);
+    filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0.01);
+    width: 2px;
+}
+.cmd > .clipboard {
+    position: fixed;
+}
+.terminal {
+    padding: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.terminal .prompt {
+    float: left;
+}
+
+.terminal .cmd span {
+    float: left;
+    /*display: inline-block; */
+}
+.terminal .cmd span.inverted {
+    background-color: #444;
+    color: #000;
+}
+
+.tilda {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1100;
+}
+.clear {
+    clear: both;
+}

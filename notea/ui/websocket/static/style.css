@@ -1,0 +1,77 @@
+@import url('compassrose.css');
+
+#wrapper {
+	width: 100%;
+	height: 100%;
+	margin: 0 auto;
+	position: absolute;
+}
+#gameui {
+	width: 80%;
+	height: 90%;
+	margin: 8px auto;
+	border: dotted black 1px;
+	padding: 1em;
+}
+#terminal {
+	height: 100%;
+	padding: 0 2em 0 0;
+	overflow-y: auto;
+	font-family: FreeMono, monospace;
+	color: #000;
+	font-size: 1.1em;
+}
+
+#controls {
+	float: right;
+	position: relative;
+	width: 10em;
+	height: 100%;
+	padding: 0 2em;
+	border-left: dotted black 1px;
+}
+
+#controls .compass {
+	width: 100px;
+	height: 100px;
+	left: 0;
+	right: 0;
+	margin: 50px auto;
+}
+
+#controls .score {
+	margin: 0 auto;
+}
+
+body {
+	font-family: FreeMono, monospace;
+}
+
+p {
+	margin: 0 0 1em 0;
+}
+
+p.user-input {
+	margin: 0;
+}
+
+a {
+	text-decoration: none;
+	font-style: italic;
+}
+a:link, a:visited {
+	color: #2BAAB3;
+}
+a:hover {
+	color: #27CF89;
+	text-decoration: underline;
+}
+a:active {
+	color: #27CF89;
+}
+
+.small {
+	font-size: 0.65em;
+	text-transform: uppercase;
+	color: #555;
+}

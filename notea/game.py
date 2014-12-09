@@ -4,7 +4,7 @@ Session, which holds in-progress game state.
 """
 # (c) Leo Koppel 2014
 
-import os
+import os, sys
 import time, datetime
 import copy
 import greenlet
@@ -112,7 +112,7 @@ class Session(things.GameObject):
         if not self.validate_filename(filename):
             raise EngineError("Invalid filename.")
 
-        shelf = shelve.open('save/' + filename, protocol=0)
+        shelf = shelve.open(os.path.join(self._game.savedir, filename), protocol=0)
 
         shelf['timestamp'] = time.time()
         shelf['session'] = self
@@ -123,7 +123,7 @@ class Session(things.GameObject):
         if not self.validate_filename(filename):
             raise EngineError("Invalid filename.")
 
-        shelf = shelve.open('save/' + filename, protocol=0)
+        shelf = shelve.open(os.path.join(self._game.savedir, filename), protocol=0)
 
         self.__dict__.update(shelf['session'].__dict__)
 
@@ -340,6 +340,9 @@ class Game(object):
         # Initialize game keywords and default actions
         default_actions.init_keywords(self)
         default_actions.init_actions(self)
+        
+        # Directory for save files (under script dir by default)
+        self.savedir = os.path.join(os.path.dirname(sys.argv[0]), 'save')
 
     # Convenience property for special player character Thing
     @property

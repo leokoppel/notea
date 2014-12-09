@@ -6,6 +6,7 @@ import notea
 from notea import Game, PlayerCharacter, Thing, Item, Room
 from notea.things import Inventory
 
+SAVE_DIR = 'tests/save/'
 
 class SaveTestCase(unittest.TestCase):
 
@@ -13,7 +14,7 @@ class SaveTestCase(unittest.TestCase):
         print ("===== Setting up test %s  " % self._testMethodName).ljust(100, '=')
         
         try:
-            os.remove('save/'+ self._testMethodName + '.db')
+            os.remove(SAVE_DIR + self._testMethodName + '.db')
         except OSError:
             pass
         
@@ -184,11 +185,11 @@ class SaveTestCase(unittest.TestCase):
         
         # Test unpickling with completely restarted game object
         # Dump to file for next test:
-        with open("save/session_pickle.db", "wb") as f:
+        with open(SAVE_DIR + '/session_pickle.db', 'wb') as f:
             f.write(s1_pickle)
     
     def test_session_pickle_restore(self):
-        with open("save/session_pickle.db", "rb") as f:
+        with open(SAVE_DIR + '/session_pickle.db', 'rb') as f:
             # Thing A is made in between game.start() and the session copy
             # it is expected NOT to work after restore, as restarted game state is not the same
             self.assertRaises(notea.EngineError, pickle.load, f)
@@ -207,6 +208,8 @@ class SaveTestCase(unittest.TestCase):
        
     
     def test_save_new_session(self):
+        
+        self.game.savedir = SAVE_DIR
         
         @self.game.episode()
         def crickets(ep):

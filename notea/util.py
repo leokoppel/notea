@@ -3,6 +3,7 @@ Classes and functions with no internal depencies, which can be used across the p
 """
 # (c) Leo Koppel 2014 
 
+import os
 import abc
 import re
 import inflect as inflect_module
@@ -97,5 +98,16 @@ def replace_decorator(methodname):
         return decorator
     return replace_method
 
+def ensure_path_exists(path):
+    """
+    Create directories if a path doesn't exist
+    From http://stackoverflow.com/a/14364249
+    """
+    try: 
+        os.makedirs(path)
+    except OSError:
+        if not os.path.isdir(path):
+            raise
+        
 # default for keyword arguments where None is a valid input
 sentinel = object()

@@ -111,8 +111,10 @@ class Session(things.GameObject):
     def save_to_file(self, filename):
         if not self.validate_filename(filename):
             raise EngineError("Invalid filename.")
-
-        shelf = shelve.open(os.path.join(self._game.savedir, filename), protocol=0)
+        
+        savepath = os.path.join(self._game.savedir, filename)
+        util.ensure_path_exists(savepath)
+        shelf = shelve.open(savepath, protocol=0)
 
         shelf['timestamp'] = time.time()
         shelf['session'] = self

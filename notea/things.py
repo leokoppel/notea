@@ -527,7 +527,7 @@ class Room(Thing):
             # For room descriptions only, use the <thing> syntax to create generic non-interactive things
             for name in self._desc_thing_re.findall(description):
                 Thing(name, location=self)
-            self._desc_thing_re.sub(r'\1', description)
+            description = self._desc_thing_re.sub(r'\1', description)
             self.description = description
 
 

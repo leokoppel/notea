@@ -38,14 +38,15 @@ class WebUI(notea.things.GameObject):
     Interface between user and game
     """
 
-    def __init__(self, game=None):
+    def __init__(self, game=None, port=5000):
         super(WebUI, self).__init__(game)
         ui_path = os.path.dirname(__file__)
+        self.port = port
         self.app = flask.Flask(self._game.title,
                                template_folder=ui_path + '/templates',
                                static_folder=ui_path + '/static')
 
-        self.http_server = gevent.wsgi.WSGIServer(('', 5000), self.app,
+        self.http_server = gevent.wsgi.WSGIServer(('', port), self.app,
             handler_class=geventwebsocket.handler.WebSocketHandler)
 
         if self._game.debug:
@@ -87,7 +88,7 @@ class WebUI(notea.things.GameObject):
 
         @self.app.route('/')
         def game_ui():
-            return flask.render_template('game.html')
+            return flask.render_template('game.html', ws_port = self.port)
 
 
     def start(self, start_callback=None):

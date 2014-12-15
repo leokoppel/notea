@@ -49,7 +49,7 @@ jQuery(function($, undefined) {
     });
     
     if ("WebSocket" in window) {
-        ws = new WebSocket("ws://" + document.domain + ":5000/game");
+        ws = new WebSocket("ws://" + document.domain + ":" + WS_PORT +"/game");
         ws.onmessage = function(msg) {
             data = $.parseJSON(msg.data);
             $('.value-score').text(data.sessiondata.score);

@@ -264,7 +264,8 @@ class Action(things.GameObject):
                 possible = list(all_possible)
                 if len(possible) > 1 and isinstance(targets[0].nouns, things.BaseThing):
                     # ambiguity: e.g. given "look desk" when "look at desk" and "look in desk" are options
-                    s = "Do you want to %s?" % util.inflect.join([self.name + ' ' + h[0].prep.upper() + ' ' + targets[0].nouns.the_str for h in possible], conj='or')
+                    s = "Do you want to %s?" % util.inflect.join([self.name + ' ' + (h[0].prep.upper() if h[0].prep else '')
+                        + ' ' + targets[0].nouns.the_str for h in possible], conj='or')
                     raise AmbiguityError(s, notea.parser.Ambiguity(self.name, targets, 'IN', 0))
 
 

@@ -295,7 +295,7 @@ class Thing(BaseThing, MountableThing):
     string_drop = 'Dropped.'
     string_too_far = "You can't reach it."
 
-    def __init__(self, name, description=None, location=None,
+    def __init__(self, name, description=None, location=None, container=False,
                  count=1, synonyms=None, a_str=None, the_str=None, game=None, 
                  *args, **kwargs):
         super(Thing, self).__init__(game, *args, **kwargs)
@@ -313,6 +313,9 @@ class Thing(BaseThing, MountableThing):
 
         self.location = location or self._game.current_session._current_location
         if self.location: self.location.inventory.add(self)
+
+        if container:
+            self.inventory = Inventory()
 
         self.count = count
 
@@ -463,6 +466,27 @@ class Item(Thing):
         self.gettable = True
         self.standout = True
 
+class BackgroundItem(Thing):
+    """
+    A non-interactive item
+    """
+    pass
+
+class Container(Item):
+    """
+    A thing you can put other things in
+    """
+
+    @property
+    def contents_description(self):
+        """ Return a description of notable things lying around in the room """
+        return '  \n'.join("There {} {} here.{}".format(util.inflect.plural_verb('is', item.count),
+                                                      item.a_str,
+                                                      ' (outside {})'.format(self._game.pc.position.the_str) if self._game.pc.position else ''
+                                                      )
+                         for item in self.inventory if (item.gettable and item.moved) or item.standout)
+
+
 class Character(Thing):
     """ A character """
     def __init__(self, *args, **kwargs):
@@ -526,7 +550,7 @@ class Room(Thing):
         if description:
             # For room descriptions only, use the <thing> syntax to create generic non-interactive things
             for name in self._desc_thing_re.findall(description):
-                Thing(name, location=self)
+                BackgroundItem(name, location=self)
             description = self._desc_thing_re.sub(r'\1', description)
             self.description = description
 

@@ -120,6 +120,11 @@ def init_keywords(self):
 def init_actions(self):
         # Default actions
 
+        @self.on_group('all', notea.things.BackgroundItem)
+        def leave_it_alone():
+            self.narrate("That's not important; leave it alone.")
+            return True
+
         @self.on(['look', 'look around'], None, groups=['sight'], synonyms=['l'])
         def look():
             self.actions['examine'].do(self.pc.location)

@@ -111,9 +111,10 @@ class Session(things.GameObject):
     def save_to_file(self, filename):
         if not self.validate_filename(filename):
             raise EngineError("Invalid filename.")
-        
+
         savepath = os.path.join(self._game.savedir, filename)
-        util.ensure_path_exists(savepath)
+
+        util.ensure_path_exists(self._game.savedir)
         shelf = shelve.open(savepath, protocol=0)
 
         shelf['timestamp'] = time.time()
@@ -137,7 +138,7 @@ class Session(things.GameObject):
 
         for k, v in self.__dict__.iteritems():
             setattr(res, k, copy.copy(v))
-        
+
         res._uids = {copy.copy(x):copy.copy(y) for x, y in self._uids.iteritems()}
         return res
 
@@ -342,7 +343,7 @@ class Game(object):
         # Initialize game keywords and default actions
         default_actions.init_keywords(self)
         default_actions.init_actions(self)
-        
+
         # Directory for save files (under script dir by default)
         self.savedir = os.path.join(os.path.dirname(sys.argv[0]), 'save')
 

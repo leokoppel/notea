@@ -129,6 +129,19 @@ class SaveTestCase(unittest.TestCase):
         self.assertEqual(c.y, 30)
         self.assertNotIn('y', c.__dict__)
     
+    def test_inventory(self):
+        
+        # Test that copied placeheld sets (inventory parent) are decoupled
+        ps1 = notea.things.PlaceheldSet()        
+        ps2 = copy.copy(ps1)
+        
+        x = Thing('a')
+        ps1.add(x)
+        
+        self.assertNotEqual(ps1, ps2)
+        self.assertIsNot(ps1, ps2)
+        self.assertIn(x, ps1)
+        self.assertNotIn(x, ps2)
     
     def test_session_pickle(self):
         
@@ -146,25 +159,37 @@ class SaveTestCase(unittest.TestCase):
         self.assertEqual(sstate_a, a)
         self.assertEqual(sstate_a.x, a.x)
         self.assertIn('x', sstate_a.__dict__)
-        
+
         # Test copy of session flyweight from get_copy()
         # Now we expect the things set to only include a flyweight of 'a'
         s1 = self.game.current_session.get_copy()
-        
+
         self.assertEqual(s1._uids[a._uid]._thingref, a)
         self.assertEqual(s.things, s1.things)
         self.assertIsNot(s.things, s1.things)
         self.assertTrue(a in s1.things)
         self.assertIn(a, s1.things)
-        
-        
-        
+
+
         s1state = s1.__getstate__()
         s1state_a = next(x for x in s1state['_uids'].values() if x.name == 'thing A')
         self.assertEqual(s1state_a._thingref, a)
         self.assertEqual(s1state_a.x, 'spam')
         self.assertNotIn('x', s1state_a.__dict__)
-                
+
+        # Test decoupling of inventory (a PlaceheldSet) between sessions
+        b = Thing('test')
+        s.pc.inventory.add(b)
+        self.assertIn(b, s.pc.inventory)
+        self.assertNotIn(b, s1.pc.inventory)
+        self.assertNotEqual(s.pc.inventory, s1.pc.inventory)
+        
+        # Test decoupling of position (a PlaceheldProperty) between sessions 
+        s1.pc.position = a
+        self.assertEqual(s1.pc.position, a)
+        self.assertEqual(s.pc.position, None)
+        
+
         # Test pickle of original session
         # This is only useful to check for exceptions on pickling, not for data integrity
         s_pickle = pickle.dumps(s)

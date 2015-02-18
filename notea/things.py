@@ -113,6 +113,11 @@ class PlaceheldProperty(object):
 
     def __set__(self, obj, val):
         obj._placeholders[self.name] = val and val._uid
+        
+    def __copy__(self):
+        c = type(self)()
+        c.__dict__.update(self.__dict__)
+        raise Exception(self)
 
 
 class BaseThing(GameObject):
@@ -137,8 +142,9 @@ class BaseThing(GameObject):
             t = BaseThing.__new__(self.__class__)
             t._thingref = self
             t._templates = {}
+            t._placeholders = copy.copy(self._placeholders)
             for k, v  in self.__dict__.iteritems():
-                if isinstance(v, PlaceheldSet):
+                if isinstance(v, PlaceheldSet) or isinstance(v, PlaceheldProperty):
                     t.__dict__[k] = copy.copy(v)
             return t
 
@@ -719,6 +725,10 @@ class PlaceheldSet(GameObject):
     def __str__(self):
         return '{}({})'.format(self.__class__.__name__, [x for x in self._set])
 
+    def __copy__(self):
+        c = type(self)()
+        c._set = copy.copy(self._set)
+        return c
 
 class Inventory(PlaceheldSet):
     """ A set used to store Things """

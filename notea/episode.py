@@ -37,21 +37,21 @@ class Episode(things.GameObject):
         # (i.e. when the episode is running)
         # Thus, override to save more than _thingref
         state = super(Episode, self).__getstate__()
-        
+
         if self.nosave:
             state['_scheduled_step'] = None
             state['_scheduled_time'] = None
             del state['_generator']
             del state['_f']
         return state
-    
+
     def __setstate__(self, d):
         super(Episode, self).__setstate__(d)
-        
+
         if self.nosave:
             # Mark for removal next step
             self._dead = True
-            
+
 
     def __copy__(self):
         state = things.GameObject.__getstate__(self)
@@ -64,13 +64,13 @@ class Episode(things.GameObject):
         Called when decorated function name is called
         """
         logger.debug("Starting episode %s (%s)" % (self.name, hex(id(self))))
-        
+
         self._dead = False
-        
+
         session = self._game.current_session
         session._live_episodes.append(self)
         self._generator = self._f(self, *args, **kwargs)
-        
+
         res = next(self._generator)
         return session.episode_yield(self, *res if res else None)
 
@@ -79,21 +79,21 @@ class Episode(things.GameObject):
         self.steps += 1
         res = (steps, time, resume, block)
         logger.debug("%s to yield with %s" % (repr(self), res))
-        
+
         # Return so it can be yielded
         return res
-        
+
     def switch(self, msg):
         """
         Call from outside
         """
         self.response = msg
         return self._generator.send(msg)
-    
+
     def unschedule(self):
         self._scheduled_step = None
         self._scheduled_time = None
-        
+
 
 class Conversation(Episode):
     """

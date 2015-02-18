@@ -15,16 +15,16 @@ class ProxiableMeta(type):
         the game's proxy_things setting is false.
         """
         proxy = kwargs.pop('proxy', True)
-        
+
         thing = cls.__new__(cls, *args, **kwargs)
         thing.__init__(*args, **kwargs)
-        
+
         # Only proxy objects which do set _uid, and if Game settings allow it
-        if proxy and hasattr(thing, '_uid') and thing._game.proxy_things: 
+        if proxy and hasattr(thing, '_uid') and thing._game.proxy_things:
             return ThingProxy(thing)
-        
+
         return thing
-        
+
 
 class ThingProxy(object):
     """

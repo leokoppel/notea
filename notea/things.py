@@ -108,7 +108,7 @@ class PlaceheldProperty(object):
             uid = obj._placeholders[self.name]
         except KeyError:
             return obj._thingref._placeholders[self.name]
-        
+
         return uid and obj._get_thing_by_uid(uid)
 
     def __set__(self, obj, val):
@@ -256,7 +256,7 @@ class MountableThing(object):
             self.dismount_prep = dismount_action[0].split()[1]
         except IndexError:
             raise EngineError('Could not automatically find dismount_action for {}. Please provide one.').fornat(mount_action)
- 
+
         
         
         for x in list(dismount_action):

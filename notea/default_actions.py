@@ -25,7 +25,7 @@ def init_keywords(self):
             session._no_move = True
 
         kwd = functools.partial(self.on, targets=notea.Session, action_dict=self.keywords,
-                                pre_handler = kwd_pre_handler)
+                                pre_handler=kwd_pre_handler)
 
         @kwd('quit')
         def quit_game(session):
@@ -132,7 +132,7 @@ def init_actions(self):
         @self.on(['look', 'look at'], Thing)
         def look_at_thing(thing):
             thing.examine()
-        
+
         @self.on('wait')
         def wait():
             pass
@@ -177,19 +177,19 @@ def init_actions(self):
             else:
                 connection = self.pc.location.connections[direction.name]
                 connection.follow()
-        
+
         @self.on(['stand', 'stand up'], None)
         def stand():
             if self.pc.position and not self.pc.position_action == 'stand':
                 self.pc.position.try_exit()
             else:
                 self.narrate("You are.")
-        
+
         @self.on(['sit on', 'stand on', 'climb on'], Thing,
                  interrogative='What do you want to {action} on?')
         def no_climbing(t):
             self.narrate("You can't climb on {}".format(t.the_str))
-            
+
         @self.on_start()
         def default_on_start():
             """ Default startup method """

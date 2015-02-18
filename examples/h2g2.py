@@ -28,7 +28,7 @@ def too_dark(*things):
 
 # Create a room, which is automatically bound to the Game.
 # The description can use template logic, and extra whitespace is automatically removed
-# Enclosing words with angle brackets automatically creates a non-interactive Thing (useful for "background" items) 
+# Enclosing words with angle brackets automatically creates a non-interactive Thing (useful for "background" items)
 bedroom = Room('Bedroom',
                """
                The bedroom is a mess. It is a small bedroom with a <faded carpet>
@@ -41,10 +41,10 @@ bedroom = Room('Bedroom',
 # Using 'with' automatically places the items in the room (unless we provide a contradicting 'location' argument!)
 with bedroom:
     bedroom.dark = True
-    
+
     # Create an object that's placed in the bedroom. We can list several synonyms for it's name
     lamp = Thing(['light', 'lamp'])
-    
+
     # Define custom action handlers for turning the lamp on and off
     @game.on(['turn on', 'switch on', 'activate'], lamp)
     def turn_on_lamp(l):
@@ -57,10 +57,10 @@ with bedroom:
     @game.on(['turn off', 'switch off', 'activate'], lamp)
     def turn_off_lamp():
         game.narrate("Useless.")
-    
+
     gown = Item(['tatty dressing gown', 'robe', 'pocket'],
                 # Note the cheat - 'pocket' is a synonym for 'gown' to easily allow either 'look in pocket' or 'look in gown',
-                # but this does allow 'put on pocket' (as in the original game). That's OK. 
+                # but this does allow 'put on pocket' (as in the original game). That's OK.
                 """
                 The dressing gown is faded and battered, and is clearly a garment which has
                 seen better decades. It has a pocket and a small loop at the
@@ -69,18 +69,18 @@ with bedroom:
                 container=True,
                 a_str='your gown', the_str='your gown')
     gown.standout = False # since we mentioned the gown in the room description, we don't want it to automatically be listed
-    
+
 
     bed = Thing('bed')
     bed.mountable(['lie on', 'lie in', 'sit on', 'sit in'], reachable_things=[lamp])
     bed.exit_string = "Very difficult, but you manage it. The room is still spinning. It dips and sways a little."
 
-# Define the gown's contents. Again, 'with' automatically places the objects in the gown.s    
+# Define the gown's contents. Again, 'with' automatically places the objects in the gown.s
 with gown:
     Item("a thing your aunt gave you which you don't know what it is")
-    Item(['a buffered analgesic','pill'])
+    Item(['a buffered analgesic', 'pill'])
     Item('pocket fluff')
-    
+
 
 porch = Room('Front Porch', 'The front!', {'n':bedroom},)
 front = Room('Front of House', connections={'n':porch})

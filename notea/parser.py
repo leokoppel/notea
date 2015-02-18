@@ -355,7 +355,7 @@ class Parser(object):
         else:
             logger.debug("Skipping ambiguity, treating input as new.")
         return verb, new_pairs
-    
+
 
     def words_to_objects(self, verb, pairs, session):
         """
@@ -466,10 +466,10 @@ class Parser(object):
                 targets[0].nouns = session
         except NameError:
             pass
-        
+
         return action, targets
-        
-        
+
+
 
     def parse(self, line, session=None, ambiguity=None):
         """
@@ -539,7 +539,7 @@ class Parser(object):
                     possible = [h for h in action.handlers if len(h) == 1
                                 and (targets[i].prep == k.prep for i, k in enumerate(h))]
                     if(possible):
-                        s = action.interrogative.format(action = verb + (''.join((' ' + p.prep if p.prep else '') for p in pairs)))
+                        s = action.interrogative.format(action=verb + (''.join((' ' + p.prep if p.prep else '') for p in pairs)))
                         raise AmbiguityError(s, Ambiguity(verb, pairs, 'NN', 0, 0))
 
                 # check if user tried to pass a list to a handler that won't accept multiples
@@ -588,7 +588,7 @@ class Parser(object):
         # Special cases: directions and room nouns
         if noun in self._game.room_nouns:
             matches.add(self._game.pc.location)
-        
+
         if not matches:
             for d in self._game.directions:
                 if noun in self._game.directions[d]:

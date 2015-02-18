@@ -134,7 +134,7 @@ class Action(things.GameObject):
 
         # Need action list to be an n-tuple of Target Pairs
         targets = conform_target_input(targets)
-        
+
         if not isinstance(targets[0], TargetPair):
             raise EngineError("Given argument %s is not a tuple of TargetPairs" % targets)
 
@@ -354,7 +354,7 @@ class Handler(object):
 
             if(self.limit != None):
                 self.limit -= 1
-            
+
             # pre-handler can cancel handler by returning true
             if self.pre_handler and self.pre_handler(*args):
                 return True
@@ -367,7 +367,7 @@ class Handler(object):
         """ Call with TargetPairs as arguments """
         hargs = [k.nouns for k in pairs if k.nouns]
         return self.__call__(*hargs)
-    
+
     def default_pre_handler(self, *things):
         """
         By default, this is called before the handler function for each action
@@ -387,7 +387,7 @@ class Handler(object):
                 except TypeError:
                     pass
         return None
-                
+
 
     def __str__(self):
         return "Handler('{}')".format(self.func)
@@ -422,5 +422,5 @@ def form_action_targets(action, targets):
         else:
             raise EngineError('Actions must be given as one or two words \
             (more complex structures are possible using TargetPairs).')
-            
+
     return action_targets

@@ -1,11 +1,12 @@
 
 jQuery(function($, undefined) {
-    var ws;
+    var socket;
+    var namespace = '/game';
     var term = {
         _term : $('#terminal'),
         _out : $('#terminal-output'),
         send : function(msg) {
-            ws.send(msg);
+            socket.send(msg);
         },
         echo : function(msg, fade, userinput) {
            fade = (fade === undefined) ? 500 : (fade || 0);
@@ -49,13 +50,16 @@ jQuery(function($, undefined) {
     });
     
     if ("WebSocket" in window) {
-        ws = new WebSocket("ws://" + document.domain + ":" + WS_PORT +"/game");
-        ws.onmessage = function(msg) {
-            data = $.parseJSON(msg.data);
+        socket = io.connect("http://" + document.domain + ":" + location.port + namespace);
+        socket.on('connect', function() {
+                console.log('Connected');
+            });
+        socket.on('message', function(msg) {
+            data = $.parseJSON(msg);
             $('.value-score').text(data.sessiondata.score);
             $('.value-moves').text(data.sessiondata.moves);
             term.echo(data.output);
-        };
+        });
     } else {
         term.echo("WebSocket not supported.");
     }

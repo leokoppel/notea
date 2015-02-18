@@ -586,14 +586,21 @@ class Game(object):
             self.pc.location = location
         if not self.pc.location:
             raise EngineError("PC must have location before game start.")
-        if not self.ui or isinstance(self.ui, SilentUI):
-            new_ui = ui or notea.ui.default_ui
-            self.ui = new_ui(self, **ui_kwargs)
-
+        
         self.current_session.running = True
 
-        if startui:
-            self.ui.start(self.on_start_handler)
+        if not self.ui or isinstance(self.ui, SilentUI):
+            # Initialize a new UI
+            new_ui = ui or notea.ui.default_ui
+            self.ui = new_ui(self, **ui_kwargs)
+            if startui:
+                self.ui.start(self.on_start_handler, **ui_kwargs)
+        else:
+            # UI already initialized
+            if startui:
+                self.ui.start(self.on_start_handler)
+
+
 
     def stop(self):
         if self.ui:

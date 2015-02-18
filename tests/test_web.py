@@ -1,6 +1,7 @@
 import unittest
 import websocket
-import gevent
+from flask.ext import socketio
+import gevent, json
 
 import notea.ui
 from notea import Game, Room, Thing, ThingList, Character, PlayerCharacter, Item, TargetPair
@@ -14,14 +15,14 @@ class TestGame(unittest.TestCase):
         self.room = Room("A room")
         self.game.pc.place(self.room)
 
-        self.game.start(ui=notea.ui.WebUI, startui=False)
-        self.app = self.game.ui.app.test_client()
-
+        self.game.ui = notea.ui.WebUI()
+        self.game.ui.app.config['SECRET_KEY'] = 'secret'
+                
         print ("===== Starting test %s  " % self._testMethodName).ljust(100, '=')
 
 
     def tearDown(self):
-        self.game.stop
+        self.game.stop()
         del self.game
         print ("===== End test %s  " % self._testMethodName).ljust(100, '=')
 
@@ -32,40 +33,36 @@ class TestGame(unittest.TestCase):
 
 
     def test_route(self):
-        rv = self.app.get('/')
-        assert rv._status_code == 200
+        test_client =  self.game.ui.app.test_client()
+        rv = test_client.get('/')
+        self.assertEqual(rv._status_code, 200)
 
-        rv = self.app.get('/gameterminal')
+        rv = test_client.get('/game')
         # should be for websockets only
-        assert rv._status_code == 404
+        self.assertEqual(rv._status_code, 404)
 
     def test_websocket(self):
-        # TODO: figure out how to test and stop gevent wsgiserver properly
-
+        
         def test_worker():
             gevent.sleep(0.05)
-            ws = websocket.create_connection("ws://127.0.0.1:5000/game", timeout=1)
-            ws.send("look")
-            rv = ws.recv()
-            print "Received '%s'" % rv
-            assert "A room" in rv
-            assert "sessiondata" in rv
-
-            ws.close()
-
+            test_client = self.game.ui.socketio.test_client(self.game.ui.app, namespace='/game')
+            test_client.get_received('/game') # clear buffer
+            
+            test_client.send('look', namespace='/game')
+            rv = test_client.get_received('/game')
+            self.assertEqual(len(rv), True)
+            rv_data = json.loads(rv[0]['args'])
+            
+            self.assertEqual(rv_data['sessiondata']['moves'], 1)
+            
         import threading
         t = threading.Thread(target=test_worker)
         t.start()
-
+        
         gevent.spawn_later(0.1, self.game.stop)
         self.game.start()
-
-        assert self.game.ui.http_server.closed
-
-
-
-
-
+        
+        self.assertTrue(self.game.ui.server.closed)
 
 
 if __name__ == "__main__":

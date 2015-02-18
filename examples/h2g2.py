@@ -105,7 +105,9 @@ def main():
     bed.do('lie in') # start the game in the bed
 
 #     game.start()
-    game.start(ui=notea.ui.WebUI, port=8000)
+    game.ui = notea.ui.WebUI()
+    game.ui.app.config['SECRET_KEY'] = 'secret'
+    game.start(port=5000)
 
 
 
